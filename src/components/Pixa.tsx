@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PixaInput from "./PixaInput";
 import PixaInfo from "./PixaInfo";
 import { Box } from "@mui/material";
+import { searchPhotos } from "../services/service";
 
 type PhotoItem = {
   id: string;
@@ -14,11 +15,8 @@ const Pixa: React.FC<{ query?: string }> = ({ query = "cat" }) => {
 
   const fetchPhoto = async (q: string) => {
     try {
-      const response = await fetch(
-        `https://api.unsplash.com/search/photos?query=${q}&per_page=3&client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}`
-      );
-      const data = await response.json();
-      setPhotos(data.results); 
+       const results = await searchPhotos(query);
+        setPhotos(results);
     } catch (err) {
       console.error("Error fetching Unsplash images:", err);
     }
